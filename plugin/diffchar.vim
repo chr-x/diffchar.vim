@@ -88,8 +88,12 @@ let g:DiffCharInitEvent = ['augroup diffchar', 'autocmd!',
                 \'autocmd OptionSet diff call diffchar#ToggleDiffModeSync()',
                                                               \'augroup END']
 call execute(g:DiffCharInitEvent)
-call execute('autocmd diffchar VimEnter * ++once
+if v:vim_did_enter
+  if &diff | call diffchar#ToggleDiffModeSync(1) | endif
+else
+  call execute('autocmd diffchar VimEnter * ++once
                     \ if &diff | call diffchar#ToggleDiffModeSync(1) | endif')
+endif
 
 let &cpoptions = s:save_cpo
 unlet s:save_cpo
